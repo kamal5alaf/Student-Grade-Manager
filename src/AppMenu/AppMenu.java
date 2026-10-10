@@ -10,11 +10,12 @@ import Models.Student;
 
 import java.util.*;
 
+
 import static GradeCalculator.GradeCalculator.calculateGPA;
 import static Registers.CourseRegistry.*;
 import static Registers.StudentRegistry.*;
 
-public class ShowMenu {
+public class AppMenu {
 
 
     static Scanner sc = new Scanner(System.in);
@@ -99,34 +100,33 @@ public class ShowMenu {
         return true;
     }
 
-
     public static void addStudentMenu() {
         System.out.print("Enter Student Name:");
-        String name = ShowMenu.sc.nextLine();
+        String name = AppMenu.sc.nextLine();
         nullCheckNullOrEmpty(name);
         stringCheck(name);
 
         System.out.println("Enter Student Email:");
         System.out.print("Please enter the Local Part (@gmail.com will be added automatically): ");
-        String email = ShowMenu.sc.nextLine();
+        String email = AppMenu.sc.nextLine();
         nullCheckNullOrEmpty(email);
 
 
         Student student = new Student(name, email);
         addStudent(student);
-        System.out.println("Student Added Successfully");
+        System.out.println("Student Name : "+student.getName()+" ,StudentId : "+student.getId()+" Added Successfully");
 
     }
 
     public static void addCourseMenu() {
         System.out.print("Enter Course Name:");
-        String name = ShowMenu.sc.nextLine();
+        String name = AppMenu.sc.nextLine();
         nullCheckNullOrEmpty(name);
         stringCheck(name);
 
         System.out.println("Enter Credit Hours :");
 
-        String input = ShowMenu.sc.nextLine();
+        String input = AppMenu.sc.nextLine();
         nullCheckNullOrEmpty(input);
 
 
@@ -135,15 +135,15 @@ public class ShowMenu {
 
 
         addCourse(course);
-        System.out.println("Course Added Successfully");
+        System.out.println("Course Name" + course.getName()+ " ,Course Code" + course.getCourseCode()+ " Added Successfully");
     }
 
     public static void enrollStudentInCourseMenu() {
         System.out.print("Enter Student Name Id ");
-        String studentId = ShowMenu.sc.nextLine();
+        String studentId = AppMenu.sc.nextLine();
 
         System.out.print("Enter Course Id :");
-        String courseId = ShowMenu.sc.nextLine();
+        String courseId = AppMenu.sc.nextLine();
 
         try {
             Student student = findById(studentId);
@@ -164,21 +164,21 @@ public class ShowMenu {
 
         try {
             System.out.print("Enter Student Id :");
-            String studentId = ShowMenu.sc.nextLine();
+            String studentId = AppMenu.sc.nextLine();
             nullCheckNullOrEmpty(studentId);
 
             System.out.print("Enter Course code :");
-            String courseCode = ShowMenu.sc.nextLine();
+            String courseCode = AppMenu.sc.nextLine();
             nullCheckNullOrEmpty(courseCode);
 
 
             System.out.print("Enter Exam name :");
-            String examName = ShowMenu.sc.nextLine();
+            String examName = AppMenu.sc.nextLine();
             nullCheckNullOrEmpty(examName);
             stringCheck(examName);
 
             System.out.print("Enter score :");
-            String input = ShowMenu.sc.nextLine();
+            String input = AppMenu.sc.nextLine();
             nullCheckNullOrEmpty(input);
             double score = Double.parseDouble(input);
 
@@ -197,7 +197,7 @@ public class ShowMenu {
     public static void viewStudentTranscriptMenu() {
         try {
             System.out.print("Enter Student Id :");
-            String studentId = ShowMenu.sc.nextLine();
+            String studentId = AppMenu.sc.nextLine();
             nullCheckNullOrEmpty(studentId);
             Student student = findById(studentId);
 
@@ -225,12 +225,14 @@ public class ShowMenu {
 
         for (int x = 0; x < students.size() - 1; x++) {
 
-            for (int y = x + 1; y < students.size(); y++) {
+            for (int y = x + 1; y < students.size(); y++)
+            {
 
                 Student student = students.get(x);
-                students.set(x, students.get(y));
-                students.set(y, student);
-
+                if (students.get(y).getGBA()>students.get(x).getGBA()) {
+                    students.set(x, students.get(y));
+                    students.set(y, student);
+                }
             }
 
         }
@@ -250,7 +252,7 @@ public class ShowMenu {
         ArrayList<Student> students = new ArrayList<>();
 
         System.out.print("Enter Course Id:");
-        String courseCode = ShowMenu.sc.nextLine();
+        String courseCode = AppMenu.sc.nextLine();
         nullCheckNullOrEmpty(courseCode);
 
         for (Student s : getStudents()) {
@@ -278,13 +280,13 @@ public class ShowMenu {
     public static void removeStudentMenu() {
 
         System.out.print("Enter Student Id:");
-        String studentId = ShowMenu.sc.nextLine();
+        String studentId = AppMenu.sc.nextLine();
         nullCheckNullOrEmpty(studentId);
 
         try {
             System.out.print("Are you Sure?? Yes/No ");
             System.out.print("Enter Here : ");
-            String answer = ShowMenu.sc.nextLine();
+            String answer = AppMenu.sc.nextLine();
             if (answer.equalsIgnoreCase("Yes")) {
                 removeStudent(studentId);
                 System.out.println("Student removed successfully.");
@@ -322,8 +324,5 @@ public class ShowMenu {
         }
     }
 
-    static void main() {
-        ShowMenu.run();
-    }
 
 }

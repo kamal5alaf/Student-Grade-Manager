@@ -11,6 +11,7 @@ import java.util.List;
 public class GradeCalculator {
 
 
+
     public static double average(ArrayList<Grade> grades) {
         if (grades.isEmpty()) return 0;
         double total = 0;

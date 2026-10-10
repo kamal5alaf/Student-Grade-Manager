@@ -1,5 +1,7 @@
 package Models;
 
+import CustomException.InvalidGradeException;
+
 public class Grade {
 
     private String examName;
@@ -8,7 +10,7 @@ public class Grade {
     public Grade(String examName, double score) {
         this.examName = examName;
         if (score < 0 || score > 100) {
-            throw new IndexOutOfBoundsException("Score must be between 0 and 100");
+            throw new InvalidGradeException("Score must be between 0 and 100");
         }
         this.score = score;
     }

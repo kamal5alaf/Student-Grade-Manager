@@ -1,5 +1,7 @@
 package Models;
 
+import GradeCalculator.GradeCalculator;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,12 +13,25 @@ public class Course {
     private int creditHours;
     private ArrayList<Grade> grades = new ArrayList<>();
 
-
     public ArrayList<Grade> getGrades() {
         return grades;
     }
 
     public Course(String name, int creditHours) {
+        if (name == null || name.isBlank()) {
+            throw new IllegalArgumentException("Course name cannot be null or empty.");
+        }
+        if (creditHours <= 0) {
+            throw new IllegalArgumentException("Credit hours must be greater than zero.");
+        }
+
+        codeCount++;
+
+        this.courseCode = String.valueOf(codeCount);
+        this.name = name;
+        this.creditHours = creditHours;
+    }
+    public Course(String name, int creditHours, String courseCode) {
         if (name == null || name.isBlank()) {
             throw new IllegalArgumentException("Course name cannot be null or empty.");
         }
@@ -44,34 +59,15 @@ public class Course {
     }
 
     public void addGrade(Grade grade) {
-        if (grade.getScore() == 0 || grade.getExamName().equalsIgnoreCase(" ") || grade.getExamName() == null) {
-            throw new NullPointerException("grade == null");
-        }
-
-
         String examName = grade.getExamName();
-        if (examName.equalsIgnoreCase(" ") || examName.isEmpty()) {
+        if (examName.equalsIgnoreCase(" ") || examName.isBlank()) {
             throw new NullPointerException("examName == null");
         }
-
-        if (grade.getScore() != 0) grades.add(grade);
-        else throw new NullPointerException("grade == null");
+        grades.add(grade);
     }
 
     public double getAverageScore() {
-
-        if (grades.isEmpty()) {
-            return 0.0;
-        }
-
-        double total = 0;
-
-        for (Grade grade : grades) {
-            total += grade.getScore();
-
-        }
-
-        return total / grades.size();
+        return GradeCalculator.average(grades);
     }
 
     @Override
@@ -81,20 +77,8 @@ public class Course {
 
     public String getLetterGrade(double averageGrade) {
 
-        if (averageGrade >= 100)
-            return "A+";
-        else if (averageGrade >= 90)
-            return "A";
-        else if (averageGrade >= 80)
-            return "B";
-        else if (averageGrade >= 70)
-            return "C";
-        else if (averageGrade >= 60)
-            return "D";
-        else if (averageGrade >= 50)
-            return "E";
-        else
-            return "F";
+        return GradeCalculator.letterGrade(averageGrade);
 
     }
+
 }

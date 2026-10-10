@@ -5,6 +5,7 @@ import CustomException.DuplicateIdException;
 import GradeCalculator.GradeCalculator;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Student {
 
@@ -21,6 +22,7 @@ public class Student {
     private static int idCount = 0;
     private ArrayList<Course> enrolledCourses = new ArrayList<>();
 
+
     public String getName() {
         return name;
     }
@@ -30,13 +32,17 @@ public class Student {
     }
 
     public ArrayList<Course> getEnrolledCourses() {
-        return enrolledCourses;
+        return new ArrayList<>(enrolledCourses);
     }
-
 
     public Student(String name, String email) {
         idCount++;
         id = String.valueOf(idCount);
+        this.name = name;
+        this.email = email + emailDomain;
+    }
+    public Student(String name,String id, String email) {
+        this.id = id;
         this.name = name;
         this.email = email + emailDomain;
     }
@@ -55,8 +61,10 @@ public class Student {
     public void recordGrade(String courseCode_, Grade g) throws CourseNotFoundException {
         for (Course c : enrolledCourses) {
             String code = c.getCourseCode();
-            if (code.equalsIgnoreCase(courseCode_)) c.addGrade(g);
-            return;
+            if (code.equalsIgnoreCase(courseCode_)) {
+                c.addGrade(g);
+                return;
+            }
         }
         throw new CourseNotFoundException("Models.Course code not found");
     }
@@ -74,7 +82,11 @@ public class Student {
         }
 
         Student s = (Student) obj;
-        return s.id == this.id;
+        return s.id.equals(this.id);
+    }
+    @Override
+    public int hashCode() {
+        return java.util.Objects.hash(name, id);
     }
 
     @Override

@@ -17,6 +17,8 @@ public class CourseRegistry {
 
         if (course == null) throw new IllegalArgumentException("Course cannot be null.");
 
+        if (courses.containsKey(course.getCourseCode())) throw new IllegalArgumentException("Course already exists");
+
         for (Course c : courses.values()) {
             if (c.getName().equalsIgnoreCase(course.getName()))
                 throw new DuplicateIdException(" The course Already exists. ");
